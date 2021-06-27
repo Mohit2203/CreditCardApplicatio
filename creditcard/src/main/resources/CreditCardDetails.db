@@ -1,0 +1,16 @@
+DROP TABLE IF EXISTS credit_card;  
+	
+
+create table credit_card (
+       id bigint not null,
+       name varchar(255),
+		 cardNumberDetails varchar(255),
+		 limitValue bigint,
+		   balance_value bigint,
+        primary key (id)
+    );
+	
+	INSERT INTO credit_card (name, cardNumberDetails, limitValue) VALUES
+  ('Mohit', '1234567890', 1000),
+  ('Bob', '234567890', 2000),
+  ('Alice', '12345699', 3000);
