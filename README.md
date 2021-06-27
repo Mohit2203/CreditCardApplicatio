@@ -18,4 +18,4 @@ o	Spring Boot with Maven
 
 o Swagger to test and present the end points.
 
-o Used the Mockito and spy to test application.
+o Used the Mockito and spy for testing the functionality
