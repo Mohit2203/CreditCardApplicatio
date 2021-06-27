@@ -1,68 +1,59 @@
-/*
- * package com.project.es.creditcard.ControllerTest;
- * 
- * import static org.junit.Assert.assertEquals;
- * 
- * import org.junit.Test; import org.junit.runner.RunWith; import
- * org.mockito.Mockito; import
- * org.springframework.beans.factory.annotation.Autowired; import
- * org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest; import
- * org.springframework.boot.test.mock.mockito.MockBean; import
- * org.springframework.http.HttpHeaders; import
- * org.springframework.http.HttpStatus; import
- * org.springframework.http.MediaType; import
- * org.springframework.mock.web.MockHttpServletResponse; import
- * org.springframework.security.test.context.support.WithMockUser; import
- * org.springframework.test.context.junit4.SpringRunner; import
- * org.springframework.test.web.servlet.MockMvc; import
- * org.springframework.test.web.servlet.MvcResult; import
- * org.springframework.test.web.servlet.RequestBuilder; import
- * org.springframework.test.web.servlet.request.MockMvcRequestBuilders; import
- * com.project.es.creditcard.controller.CardProcessorController; import
- * com.project.es.creditcard.model.Request.CardProcessorRequest; import
- * com.project.es.creditcard.service.CardProcessingService;
- * 
- * @RunWith(SpringRunner.class)
- * 
- * @WebMvcTest(value = CardProcessorController.class)
- * 
- * @WithMockUser public class CardProcessorControllerTest {
- * 
- * 
- * @Autowired private MockMvc mockMvc;
- * 
- * @MockBean private CardProcessingService cardProcessingService;
- * 
- * CardProcessorRequest cardProcessorRequest = new
- * CardProcessorRequest("Mohit","9223372036854775809","20000l");
- * 
- * String exampleCardDetails =
- * "{\"name\":\"Mohit\",\"cardNumber\":\"9223372036854775809\",\"limit\":20000l}";
- * 
- * @Test public void createStudentCourse() throws Exception {
- * 
- * // studentService.addCourse to respond back with mockCourse Mockito.when(
- * cardProcessingService.addCardDetails(
- * Mockito.any(CardProcessorRequest.class)));
- * 
- * // Send course as body to /students/Student1/courses RequestBuilder
- * requestBuilder = MockMvcRequestBuilders .post("/addCard")
- * .accept(MediaType.APPLICATION_JSON).content(exampleCardDetails)
- * .contentType(MediaType.APPLICATION_JSON);
- * 
- * MvcResult result = mockMvc.perform(requestBuilder).andReturn();
- * 
- * MockHttpServletResponse response = result.getResponse();
- * 
- * assertEquals(HttpStatus.CREATED.value(), response.getStatus());
- * 
- * assertEquals("http://localhost/addCard",
- * response.getHeader(HttpHeaders.LOCATION));
- * 
- * 
- * }
- * 
- * }
- * 
- * 
- */
+package com.project.es.creditcard.ControllerTest;
+
+import com.project.es.creditcard.controller.CardProcessorController;
+import com.project.es.creditcard.service.CardProcessingService;
+import com.project.es.creditcard.service.populators.CardProcessorVoToDo;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.ArrayList;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+public class CardProcessorControllerTest{
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @InjectMocks
+    CardProcessorController cardProcessorController;
+
+    @Mock
+    private CardProcessingService cardProcessingService;
+
+    @Mock
+    private CardProcessorVoToDo cardProcessorVoToDo;
+
+    @Before
+    public void initialize(){
+        //MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(CardProcessorController.class).build();
+    }
+
+    @Test
+    public void testStandardRequest() throws Exception {
+        when(cardProcessingService.getCardsList()).thenReturn(new ArrayList<>());
+        mockMvc.perform(MockMvcRequestBuilders.get("/getAllCards")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+    }
+}
