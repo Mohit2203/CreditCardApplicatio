@@ -7,7 +7,7 @@ import com.project.es.creditcard.customannotations.NullAndEmptyConstraint;
 public class NullAndEmptyValidator implements ConstraintValidator<NullAndEmptyConstraint, String> {
 	
 	@Override
-	public void initialize(NullAndEmptyConstraint nameandimit) {
+	public void initialize(NullAndEmptyConstraint nameandlimit) {
 	}
 
 	@Override
