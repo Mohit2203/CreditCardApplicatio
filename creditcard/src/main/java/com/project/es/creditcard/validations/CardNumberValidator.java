@@ -12,27 +12,19 @@ public class CardNumberValidator implements ConstraintValidator<CardNumberConstr
 
 	@Override
 	public boolean isValid(String cardNumber, ConstraintValidatorContext cxt) {
-		boolean isValid;
-		//System.out.println("Enter Validator");
 		if (cardNumber != null  && cardNumber.matches("[0-9]+") && (cardNumber.length() > 0 )
 				&& (cardNumber.length() < 20)) {
-			isValid = true;
-		} else {
-			//System.out.println("enter else");
-			isValid = false;
-		
+			return true;
 		}
-		//System.out.println("Value isValid"+isValid);
-		return isValid;
+		return false;
 	}
 	public static  boolean isValidCard(String cardNumber){
 		int[] cardArray = {cardNumber.length() % 2 == 0 ? 1 : 2};
-		boolean isValid = cardNumber.chars()
+				return cardNumber.chars()
 						.map(i -> i - '0')
 						.map(n -> n * (cardArray[0] = cardArray[0] == 1 ? 2 : 1))
 						.map(n -> n > 9 ? n - 9 : n)
 						.sum() % 10 == 0;
-		return isValid;
 	}
 
 	/*public boolean isValidCard2(String cardNumber){

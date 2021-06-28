@@ -1,27 +1,26 @@
 package com.project.es.creditcard.ServiceTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.project.es.creditcard.Exception.NoDataFoundException;
+import com.project.es.creditcard.model.CreditCardDetail;
+import com.project.es.creditcard.model.Request.CardProcessorRequest;
+import com.project.es.creditcard.model.Response.CardDetailsResponse;
+import com.project.es.creditcard.repository.CardProcessingRepository;
+import com.project.es.creditcard.service.CardProcessingServiceImpl;
+import com.project.es.creditcard.service.populators.CardProcessorDoToVo;
+import com.project.es.creditcard.service.populators.CardProcessorVoToDo;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.project.es.creditcard.Exception.NoDataFoundException;
-import com.project.es.creditcard.model.CreditCardDetail;
-import com.project.es.creditcard.model.Response.CardDetailsResponse;
-import com.project.es.creditcard.repository.CardProcessingRepository;
-import com.project.es.creditcard.service.CardProcessingServiceImpl;
-import com.project.es.creditcard.service.populators.CardProcessorDoToVo;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CardProcessingServiceImplTest {
@@ -31,6 +30,12 @@ public class CardProcessingServiceImplTest {
 
 	@Mock
 	private CardProcessingRepository cardProcessingRepository;
+
+	@Mock
+	private CardProcessorVoToDo cardProcessorVoToDo;
+
+	@Mock
+	private CreditCardDetail creditCardDetail;
 
 	@InjectMocks
 	private CardProcessingServiceImpl cardProcessingServiceImpl;
@@ -43,6 +48,14 @@ public class CardProcessingServiceImplTest {
 		List<CardDetailsResponse> cardDetailsResponse =cardProcessingServiceImpl.getCardsList();
 		Assert.assertEquals(cardDetailsResponse.size(),4);
 
+	}
+
+	@Test
+	public void testAddCardDetails() {
+		CardProcessorRequest request = new CardProcessorRequest();
+		when(cardProcessorVoToDo.populateDo(any())).thenReturn(creditCardDetail);
+		cardProcessingServiceImpl.addCardDetails(request);
+		verify(cardProcessingRepository).save(creditCardDetail);
 	}
 	
 	@Test(expected = NoDataFoundException.class)

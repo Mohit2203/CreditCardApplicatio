@@ -21,7 +21,6 @@ public class CardProcessingServiceImpl implements CardProcessingService {
 	private CardProcessingRepository cardProcessingRepository;
 	@Autowired
 	private CardProcessorVoToDo cardProcessorVoToDo;
-
 	@Autowired
 	private CardProcessorDoToVo cardProcessorDoToVo;
 
